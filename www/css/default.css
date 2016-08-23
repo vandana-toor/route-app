@@ -1,0 +1,1359 @@
+    /*|-----------------------------------------------------------------------------------
+ *|                                                     University of Heidelberg
+ *|   _____ _____  _____      _                         Department of Geography
+ *|  / ____|_   _|/ ____|    (_)                        Chair of GIScience
+ *| | |  __  | | | (___   ___ _  ___ _ __   ___ ___     (C) 2011
+ *| | | |_ | | |  \___ \ / __| |/ _ \ '_ \ / __/ _ \
+ *| | |__| |_| |_ ____) | (__| |  __/ | | | (_|  __/    Berliner Strasse 48
+ *|  \_____|_____|_____/ \___|_|\___|_| |_|\___\___|    D-69120 Heidelberg, Germany
+ *|                                                     http://www.giscience.uni-hd.de
+ *|------------------------------------------------------------------------------------*/
+    /**
+ * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Maxim Rylov, rylov@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de, Rui Nunes, rui.nunes1985@gmail.com
+ * @version: 0.1
+ */
+    /* *******************************************/
+    /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
+    /* *******************************************/
+    /************************** BASE LAYOUT ****************************/
+    
+    html, body {
+        font-family: 'Source Sans Pro', sans-serif !important;
+        font-size: 90%;
+    }
+    
+    .ORS {
+        /* BODY */
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        line-height: 1.4;
+        color: rgba(0, 0, 0, 0.8);
+        background-color: #fff;
+        color: #444;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .ORS-header {
+        /* HEADER */
+        display: flex;
+        flex: 0 0 50px;
+        background-color: #b5152b
+    }
+    
+    .ORS-main {
+        /* MAIN BODY FOR WEB APPLICATION */
+        display: flex;
+        flex: 1 0 auto;
+        flex-direction: row;
+    }
+    
+    .ORS-sidebar {
+        /* NAVIGATION SIDEBAR */
+        flex: 0 1 388px;
+        order: 1;
+        flex-direction: row;
+        position: relative;
+        color: #707070;
+    }
+    
+    .ORS-map {
+        /* MAP AREA */
+        display: flex;
+        flex: 1 1 auto;
+        order: 2;
+    }
+    /*******************************************************************/
+    /* GENERAL ELEMENTS */
+    
+    .searchWaypoint {
+        width: 220px;
+        font-size: 100%;
+    }
+    
+    .right {
+        float: right;
+    }
+    
+    .left {
+        float: left;
+    }
+    
+    .clear {
+        clear: both;
+        display: table;
+        width: 100%;
+    }
+    
+    .transparent {
+        background-color: transparent !important;
+    }
+    
+    .calcGranularity {
+        margin-top: 5px;
+        width: 100px;
+    }
+    
+    .clickable {
+        cursor: pointer;
+    }
+    
+    .clickable.active {
+        cursor: pointer;
+        color: rgb(0, 161, 45);
+    }
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+        background-color: #707070;
+    }
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+        background-color: #F0F0F0;
+    }
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+        background-color: #F0F0F0;
+    }
+    /* GENERIC ORS CLASSES */
+    
+    .ORS-light {
+        background-color: #fafafa;
+    }
+    
+    .ORS-panel {
+        border-bottom: 1px solid #EBEBEB;
+    }
+    
+    .ORS-panel-sub {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    
+    .ORS-padding {
+        padding-top: 20px;
+    }
+    
+    .ORS-hr {
+        border-bottom: 1px solid #F0F0F0;
+    }
+    
+    .ORS-hr-dark {
+        border-bottom: 1px solid #EBEBEB;
+    }
+    
+    .ORS-label {
+        line-height: 16px;
+        font-weight: normal;
+        color: #707070;
+        text-shadow: none;
+        background-color: transparent;
+        border: 1px solid black;
+    }
+    
+    .ORS-alert {
+        margin-top: 5px;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    .ORS-close {
+        display: block;
+        float: right;
+        width: 17px;
+        height: 29px;
+        color: #707070;
+    }
+    
+    .ORS-center {
+        text-align: center;
+        line-height: 40px;
+    }
+    
+    .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i {
+        /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
+        font-size: 105%;
+    }
+    
+    .ORS-BtnPrimary {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar)*/
+        background: transparent;
+        border-radius: 0px;
+        height: 41px !important;
+        border-left: transparent;
+        border-right: transparent;
+        border-top: transparent;
+        border-bottom: 2px solid transparent;
+        color: #707070;
+        box-shadow: none;
+        text-shadow: none;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    .ORS-BtnPrimary-control {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar) */
+        background: #F0F0F0;
+        border-radius: 0px;
+        border: none;
+        color: #707070;
+        box-shadow: none;
+        text-shadow: none;
+        /*font-family: 'Source Sans Pro', sans-serif;*/
+    }
+    
+    .ORS-BtnPrimary-menu {
+        /* General style for ORS buttons on left menu */
+        background: #F0F0F0;
+        border-radius: 0px !important;
+        border: none;
+        height: 41px;
+        color: #808080;
+        border-bottom: 1px solid #EBEBEB;
+        display: block;
+        width: 100%;
+        box-shadow: none;
+        text-shadow: none;
+        /*font-family: 'Source Sans Pro', sans-serif;*/
+        left: 0px;
+    }
+    
+    .ORS-BtnPrimary.active, .ORS-BtnPrimary:active, .ORS-BtnPrimary:hover {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar) */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        color: #b5152b !important;
+        background-color: transparent;
+        border-bottom: 2px solid #b5152b;
+    }
+    
+    .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover {
+        /* General style for ORS buttons on left menu */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        background-color: transparent;
+        border-bottom: 1px solid #EBEBEB;
+        color: #444 !important;
+        /* prevents icons from changing size */
+    }
+    
+    .ORS-BtnPrimary-control:hover {
+        /* General style for ORS control buttons */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        background-color: transparent;
+        border: none;
+        color: #444 !important;
+    }
+    
+    .btn:focus, .btn:active:focus, .btn.active:focus {
+        outline: none;
+    }
+    
+    .ORS-routeOptionsButton, .ORS-optionsButton {
+        width: 44px;
+    }
+    
+    .table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+        border: none;
+        font-size: 100%;
+        vertical-align: middle;
+    }
+    
+    .ORS-BtnFile {
+        /* For file upload buttons */
+        overflow: hidden;
+        position: relative;
+        vertical-align: middle;
+    }
+    
+    .ORS-BtnFile>input {
+        /* For file upload buttons */
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        border: solid transparent;
+        border-width: 0 0 100px 200px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -moz-transform: translate(-300px, 0) scale(4);
+        direction: ltr;
+        cursor: pointer;
+    }
+    /* *******************************************/
+    /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
+    /* *******************************************/
+    /* *********************************************/
+    /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
+    /* *********************************************/
+    /* STYLE FOR ELEMENTS ON HEADER SECTION */
+    
+    #ORS-title {
+        /* Main ORS title */
+        background-color: #b5152b;
+        color: #F0F0F0;
+        line-height: 25px;
+        display: flex;
+        justify-content: center;
+        /* align horizontal */
+        align-items: center;
+        font-size: 180%;
+        text-decoration: none;
+        font-family: 'Roboto', sans-serif;
+        padding-left: 10px;
+        letter-spacing: 1.5px;
+    }
+    
+    #ORS-headIcon {
+        /* ORS icon on top left side */
+        background: url(../img/logo_unihd.png) no-repeat center center;
+        background-size: 70px auto;
+        width: 80px;
+    }
+    
+    #ORS-topMenu {
+        /* ORS menu on top right side (feedback, site preferences and info icons) */
+        position: absolute;
+        top: 5px;
+        right: 4px;
+        float: right;
+        list-style: none;
+    }
+    
+    #ORS-topMenu > li, #ORS-topMenu > li >a {
+        /* Style for individual elements on ORS menu on top right side */
+        height: 40px;
+        float: left;
+        margin: 0px 10px 0px 0;
+        line-height: 40px;
+        color: white;
+        font-size: 18px;
+    }
+    
+    #contact_form {
+        width: 90%;
+        margin: 0 auto;
+    }
+    /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
+    
+    .ORS-menuPanel {
+        /* Styles for menu panel on the left side of the sidebar */
+        top: 0;
+        position: absolute;
+        overflow: auto;
+        width: 40px;
+        bottom: 20px;
+        background-color: #F0F0F0;
+    }
+    /* LEFT SIDE */
+    
+    .ORS-navigation {
+        /* Styles for menu panel on the right side of the sidebar */
+        -top: 0;
+        left: 40px;
+        width: 348px;
+        position: relative;
+        border-left: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
+        background-color: #F0F0F0;
+        height: 41px;
+    }
+    
+    #ORS-loading, #ORS-error {
+        /* Loading and error messages */
+        display: none;
+    }
+    /* RIGHT SIDE */
+    
+    .ORS-mainPanel {
+        top: 41px;
+        position: absolute;
+        overflow: auto;
+        width: 348px;
+        bottom: 20px;
+        left: 40px;
+        z-index: 400;
+        border-left: 1px solid #CCC;
+        background-color: #FFF;
+    }
+    
+    #TruckTabs>ul {
+        /* Styles for tabs on truck options */
+        border-bottom: none;
+        background: #F0F0F0
+    }
+    
+    #TruckTabs>li>a {
+        /* Styles content on each tab on truck options */
+        font-size: 80%;
+        background-color: #f8f8f8;
+        padding-bottom: 4px;
+        padding-top: 4px;
+        color: #707070;
+    }
+    
+    #TruckTabs>li>a:hover {
+        /* Styles for tabs on truck options when mouse is over tab*/
+        border-bottom: transparent;
+        background: #F0F0F0;
+    }
+    /* ROUTE SETTINGS */
+    
+    #avoidAreasError {
+        margin-top: 10px;
+        margin-bottom: 0px;
+    }
+    /* WAYPOINT OPTIONS */
+    
+    .waypointResult {
+        margin-bottom: 10px;
+        width: 240px;
+        margin-left: 32px;
+    }
+    
+    .waypointResult li {
+        list-style: none;
+    }
+    
+    .waypointResult li span {
+        position: relative;
+    }
+    
+    .addWaypoint {
+        padding-top: 5px;
+        min-height: 30px;
+        cursor: pointer;
+    }
+    
+    #plusSign {
+        color: #B8B8B8;
+        line-height: 30px;
+        font-size: 10px;
+        text-align: right;
+        bottom: 0;
+        left: -10px;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    #mapMarker {
+        color: #B8B8B8;
+        line-height: 30px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    .waypoint {
+        padding-top: 0;
+        min-height: 25px;
+        margin-bottom: 10px !important;
+    }
+    
+    .waypoint-icon {
+        display: inline-block;
+        float: left;
+        width: 33px;
+        height: 25px;
+    }
+    
+    .waypoint-icon.start:before {
+        display: block;
+        float: right;
+        width: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #00b100;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    .waypoint-icon.via:before {
+        display: block;
+        float: right;
+        width: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #ffb74b;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    .waypoint-icon.end:before {
+        display: block;
+        float: right;
+        width: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #ff6f4b;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    .waypoint-icon.unset:before {
+        display: block;
+        float: right;
+        width: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #B8B8B8;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    .removeWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f00d";
+        font-family: FontAwesome;
+    }
+    
+    .moveUpWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f062";
+        font-family: FontAwesome;
+    }
+    
+    .moveDownWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f063";
+        font-family: FontAwesome;
+    }
+    
+    .searchAgainButton:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f021";
+        font-family: FontAwesome;
+    }
+    
+    .useAsWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f041";
+        font-family: FontAwesome;
+    }
+    
+    .resultList {
+        /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
+        margin-bottom: 1em;
+    }
+    
+    .resultList li {
+        /* Styles for each item in the address list dropdown */
+        padding: 3px;
+        border-bottom: 1px solid #F0F0F0;
+        list-style: none;
+    }
+    
+    .resultList li:hover {
+        /* Styles to what happens when mouse is over the address list dropdown */
+        cursor: pointer;
+    }
+    /* ROUTE INSTRUCTIONS */
+    
+    .zoomToSearchResults {
+        /* Address search and input containers*/
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+    
+    #routeInstructionHead {
+        /*for displaying route instructions in the panel (title)*/
+        float: left;
+        width: 60%;
+    }
+    
+    .collapsibleHead:before {
+        /* Icon for route instructions collapsed */
+        padding: 3px;
+        content: "\f0d7";
+        font-family: FontAwesome;
+    }
+    
+    .collapsibleHead.collapsed:before {
+        /* Icon for route instructions opened */
+        padding: 4px;
+        content: "\f0da";
+        font-family: FontAwesome;
+    }
+    /* ROUTE INSTRUCTIONS */
+    
+    .directions-main {
+        margin-top: 5px;
+    }
+    
+    .directions-container {
+        padding: 8px 0;
+    }
+    
+    .directions-container .text {
+        padding: 3px 5px 0 30px;
+        line-height: 16px;
+        vertical-align: middle;
+    }
+    
+    .directions-container .instr-waypoint {
+        margin-top: 25px;
+        margin-left: 40px;
+        line-height: 26px;
+        position: absolute;
+    }
+    
+    .directions-container .address {
+        margin-top: 21px;
+        margin-left: 75px;
+    }
+    
+    .directions-container .submain {
+        font-size: 13px;
+        color: #A0A0A0;
+    }
+    
+    .directions-container .info {
+        padding: 6px 5px 0 75px;
+        position: absolute;
+        right: 16px;
+        font-size: 12px;
+        color: #777777;
+    }
+    
+    .mode-container {
+        padding: 0 0 0 40px;
+        position: absolute;
+        left: 0px;
+        right: 0;
+        line-height: normal;
+        font-weight: normal;
+    }
+    
+    .mode-container .distance {
+        top: 1px;
+        right: 15px;
+        padding-left: .5em;
+        padding-right: .5em;
+        z-index: 1;
+        position: absolute;
+        background-color: #fff;
+        font-size: 12px;
+    }
+    
+    .mode-container .line {
+        border-bottom: 1px solid #e6e6e6;
+        padding-top: 8px;
+        margin: 0 2em 0 0;
+    }
+    
+    .directions-warning-table {
+        color: red;
+    }
+    
+    .directions-warning-table tr td:first-child {
+        width: 37px;
+    }
+    
+    .directions-warning-table img {
+        height: 16px;
+        width: auto;
+        margin-left: 3px;
+    }
+    
+    .img {
+        margin-left: 3px;
+        position: absolute;
+    }
+    
+    .fa-rotate-45 {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    
+    .fa-rotate-315 {
+        -webkit-transform: rotate(315deg);
+        -moz-transform: rotate(315deg);
+        -ms-transform: rotate(315deg);
+        -o-transform: rotate(315deg);
+        transform: rotate(315deg);
+    }
+    /* ROUTE SUMMARY */
+    
+    .directions-summary-container {
+        height: 20px;
+        display: table;
+        table-layout: fixed;
+        width: 330px;
+    }
+    
+    .directions-summary-container .info {
+        text-align: center;
+        display: table-cell;
+        font-size: 18px;
+        border-left: 1px solid #F0F0F0;
+    }
+    
+    .directions-summary-container .info:nth-child(1) {
+        border-left: transparent;
+    }
+    
+    .directions-summary-container .info .icon {
+        font-size: 14px;
+        color: #b5152b;
+    }
+    
+    .directions-summary-container .info .content {}
+    
+    .directions-summary-container .info .content .digit {
+        display: inline;
+        padding-right: 0px;
+    }
+    
+    .directions-summary-container .info .content .units {
+        margin-right: 5px;
+        display: inline;
+        font-size: 12px;
+    }
+    /* SURFACE INFORMATION */
+    
+    #routeTypesHead {
+        float: left;
+    }
+    
+    #routeTypesBody {
+        position: relative;
+    }
+    
+    #wayType, #surfaceType, #steepnessType {
+        width: 100%;
+    }
+    
+    #wayTypeList, #surfaceTypeList, #steepnessTypeList {
+        min-height: 25px;
+        padding-bottom: 5px;
+    }
+    
+    #wayTypeList ul, #surfaceTypeList ul, #steepnessTypeList ul {
+        margin-left: -20px;
+    }
+    
+    #wayTypeList li, #surfaceTypeList li, #steepnessTypeList li {
+        float: left;
+        font-size: 90%;
+        margin-right: 20px;
+    }
+    
+    #wayTypeList li span, #surfaceTypeList li span, #steepnessTypeList li span {
+        color: #707070;
+        font-size: 90%;
+        position: relative;
+        margin-left: -5px;
+    }
+    
+    .tooltip {
+        font-family: 'Source Sans Pro', sans-serif !important;
+    }
+    
+    .tooltip:active {
+        display: none;
+    }
+    
+    .d3-tip {
+        line-height: 1;
+        padding: 8px;
+        background: rgba(0, 0, 0, 1);
+        color: #fff;
+        font-size: 90%;
+        border-radius: 4px;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 401;
+    }
+    /* Creates a small triangle extender for the tooltip */
+    
+    .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        pointer-events: none;
+    }
+    /* Northward tooltips */
+    
+    .d3-tip.n:after {
+        content: "\25BC";
+        margin: -3px 0 0 0;
+        top: 100%;
+        left: 0;
+        text-align: center;
+    }
+    /* Eastward tooltips */
+    
+    .d3-tip.e:after {
+        content: "\25C0";
+        margin: -4px 0 0 0;
+        top: 50%;
+        left: -8px;
+    }
+    /* Southward tooltips */
+    
+    .d3-tip.s:after {
+        content: "\25B2";
+        margin: 0 0 1px 0;
+        top: -8px;
+        left: 0;
+        text-align: center;
+    }
+    /* Westward tooltips */
+    
+    .d3-tip.w:after {
+        content: "\25B6";
+        margin: -4px 0 0 -1px;
+        top: 50%;
+        left: 100%;
+    }
+    /* ACCESSIBILITY ANALYSIS */
+    
+    #accessibilityAnalysisMethodList {
+        width: 140px;
+    }
+    
+    #accessibilityCalculation {
+        margin-top: 5px;
+    }
+    
+    #accessibilityError {
+        margin-top: 5px;
+    }
+    /* CLOUD CONTENT */
+    
+    .downloadGpx {
+        width: 60px;
+        height: 30px;
+        background-size: 60px 30px;
+        background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
+    }
+    
+    .fileUploadForm {
+        margin: 0px;
+    }
+    
+    .fileUploadForm > div {
+        margin: 0px;
+    }
+    
+    #fileContainerMain {
+        margin-top: 10px;
+        width: 200px;
+    }
+    
+    #fileContainer {
+        padding: 5px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    
+    #exportGpxError {
+        /* popup with information about a service timeout */
+        margin-top: 5px;
+    }
+    /* DISCLAIMER */
+    
+    .disclaimer {
+        bottom: 0;
+        position: absolute;
+        background-color: #F7F7F7;
+        width: 388px;
+        border-top: 1px solid #EBEBEB;
+        height: 22px;
+    }
+    
+    .disclaimer a, .disclaimer div {
+        font-size: 90%;
+        margin-right: 10px;
+        padding-left: 5px;
+        color: #707070;
+    }
+    /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
+    
+    .leaflet-pane {
+        /* For map pane */
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    .leaflet-control-container {
+        /* For general control containers */
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+        /* For general elements on map */
+        border-radius: 0px;
+        background-color: #FAFAFA;
+    }
+    
+    .leaflet-bottom .leaflet-control-scale {
+        /* for scale controller */
+        margin-bottom: 23px;
+    }
+    
+    .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
+        /* for locate controller */
+        width: 26px;
+        height: 26px;
+        position: relative;
+        text-align: center;
+        line-height: 26px;
+        color: #70707D;
+        cursor: pointer;
+    }
+    
+    .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
+        /* for layers controller */
+        background-image: none;
+    }
+    
+    .leaflet-control-layers a.leaflet-control-layers-toggle {
+        /* for layers controller */
+        width: 26px;
+        height: 26px;
+        position: relative;
+        text-align: center;
+        line-height: 26px;
+        color: #70707D;
+    }
+    
+    .leaflet-control-layers a.leaflet-control-layers-toggle:before {
+        /* for layers controller */
+        content: "\e804";
+        font-family: ruifont;
+    }
+    
+    .leaflet-control-customNavMenuToggle:before {
+        /* for toggle menu controller */
+        content: "\f07e";
+        font-family: FontAwesome;
+    }
+    
+    .leaflet-control-customLocate:before {
+        /* for locate controller */
+        content: "\f05b";
+        font-family: FontAwesome;
+    }
+    
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+        /* for all controllers */
+        text-decoration: none;
+        color: #707070;
+    }
+    
+    .elevation-collapsed {
+        background: #FAFAFA;
+        border-radius: 0;
+    }
+    
+    .steelblue-theme.leaflet-control.elevation .elevation-toggle {
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        width: 26px;
+        height: 26px;
+    }
+    
+    .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
+        background-size: 16px 11px;
+    }
+    
+    .ORS-mapContextMenu .ORS-contextWaypoint {
+        /* Context menu styles (when clicking with the right mouse button on the map area */
+        padding: 3px 10px 3px 10px;
+        white-space: nowrap;
+        cursor: pointer;
+        margin-bottom: 3px;
+        background-color: #b5152b;
+        border-left: 2px solid #F0F0F0;
+        color: white;
+        min-height: 10px;
+        -o-transition: .2s;
+        -ms-transition: .2s;
+        -moz-transition: .2s;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+    
+    .ORS-mapContextMenu .ORS-contextWaypoint:hover {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+        background-color: #b5152b;
+        border-left: 2px solid #444;
+    }
+    
+    .ORS-mapContextMenu .leaflet-popup-content {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+        -position: absolute;
+        left: 2.5em;
+        bottom: 0.7em;
+    }
+    
+    .ORS-mapContextMenu .leaflet-popup-content-wrapper {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+        background: transparent;
+        box-shadow: none;
+    }
+    
+    .ORS-mapContextMenu .leaflet-popup-tip-container {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+        margin: 0 auto;
+        position: relative;
+        overflow: visible;
+        width: 100px;
+        height: 20px;
+    }
+    
+    .ORS-mapContextMenu .leaflet-popup-tip {
+        /* Context menu styles (when clicking with the right mouse button on the map area */
+        border: 2px solid #b5152b;
+        box-shadow: none;
+        background-color: transparent;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+    }
+    
+    #infoPermalink {
+        /* for elements on permalink */
+        position: absolute;
+        bottom: 2px;
+        cursor: pointer;
+        width: 80px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.5);
+        color: black;
+        z-index: 999;
+        left: 0;
+        margin-left: 5px;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    #bubble {
+        /* for elements on permalink */
+        display: none;
+        position: fixed;
+        width: 70px;
+        margin-left: 110px;
+        height: 50px;
+        padding: 0px;
+        bottom: 3px;
+        background: rgba(255, 255, 255, 0.5);
+        z-index: 999;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    #bubble #permaText {
+        /* for elements on permalink */
+        position: absolute;
+        padding: 5px 2px 2px 20px;
+    }
+    
+    #bubble #permaText #copy {
+        /* for elements on permalink */
+        cursor: pointer;
+    }
+    
+    #bubble #permaText #open {
+        /* for elements on permalink */
+        margin-top: 5px;
+        cursor: pointer;
+    }
+    
+    #bubble:after {
+        /* for elements on permalink */
+        content: '';
+        position: relative;
+        border-style: solid;
+        border-width: 7px 7px 7px 0;
+        border-color: transparent rgba(255, 255, 255, 0.5);
+        display: block;
+        width: 0;
+        z-index: 1;
+        left: -7px;
+        top: 27px;
+    }
+    
+    #avoidables_info {
+        /* avoidables info */
+        display: none;
+        width: 220px;
+        line-height: 1.1;
+        z-index: 999;
+        position: absolute;
+        right: 100px;
+        top: 120px;
+    }
+    
+    #serviceTimeout {
+        /* service timeout message */
+        display: none;
+        position: absolute;
+        margin-left: 40px;
+        top: 5px;
+        z-index: 999;
+        width: 220px;
+        line-height: 1.1;
+    }
+    
+    #newToOrs {
+        /* new to ORS message */
+        display: none;
+        width: 220px;
+        line-height: 1.1;
+        z-index: 999;
+        position: absolute;
+        right: 100px;
+        top: 10px;
+    }
+    
+    .ORS-logo {
+        /* GIScience Logo */
+        background-image: url('../img/logo_giscience.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 64px;
+        width: 64px;
+        height: 64px;
+        bottom: 15px;
+        text-indent: -9999px;
+        display: block;
+        right: 5px;
+        position: absolute;
+        z-index: 999;
+    }
+    /* ******************************************/
+    /* END OF ELEMENT STYLES (CLASSES AND ID's) */
+    /* ******************************************/
+    /* ******************************************************************/
+    /* START OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
+    /* ******************************************************************/
+    
+    @media screen and (min-width: 320px) and (max-width: 720px) {
+        .ORS-main {
+            flex-direction: column;
+        }
+        .ORS-sidebar {
+            order: 2;
+            flex-basis: 50vh;
+        }
+        .ORS-map {
+            order: 1;
+        }
+       /* #ORS-title {
+            margin-left: 10px;
+            position: absolute;
+            height: 50px;
+            font-size: 100%;
+        }
+        
+        .leaflet-control-container .leaflet-top .leaflet-right {
+            margin: 0 auto !important;
+            clear: none !important;
+        }
+        .leaflet-control-customNavMenuToggle {
+            width: 30px !important;
+            height: 30px !important;
+            margin-left: 10px;
+            position: absolute;
+            height: 50px;
+        }
+        /* To hide the mouse position controller */
+        .leaflet-control-mouseposition {
+            display: none;
+        }
+        .leaflet-control-customLocate {
+            width: 26px;
+            height: 26px;
+        }
+        .leaflet-control-layers-toggle:before {
+            width: 26px;
+            height: 26px;
+        }
+        .leaflet-control-customNavMenuToggle:before {
+            content: "\f07d";
+            font-family: FontAwesome;
+            width: 30px !important;
+            height: 30px !important;
+            width: 26px;
+            height: 26px;
+        }
+        .leaflet-control-zoom-in {
+            width: 26px;
+            height: 26px;
+        }
+        .leaflet-control-zoom-out {
+            width: 26px;
+            height: 26px;
+        }
+        .ORS-sidebar {
+            box-shadow: none;
+        }
+        .ORS-sidebarContent {
+            width: 100%;
+        }
+        .disclaimer {
+            width: 100%;
+        }
+        .tooltip {
+            display: none !important;
+        }
+        .ORS-navigation {
+            width: calc(100% - 41px) !important;
+        }
+        .ORS-mainPanel {
+            width: calc(100% - 41px) !important;
+        }
+        .ORS-logo {
+            /* GIScience Logo */
+            bottom: 25px;
+            right: calc(100vw - 60%);
+        }
+        .leaflet-bottom .leaflet-control-scale {
+            /* for scale controller */
+            display: none;
+        }
+        #infoPermalink {
+            position: absolute;
+            margin-bottom: 30px;
+            margin-left: 5px;
+        }
+        #bubble {
+            position: absolute;
+            margin-bottom: 30px;
+        }*/
+
+    }
+    /* ****************************************************************/
+    /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
+    /* ****************************************************************/
+    /* *****************************************************************/
+    /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
+    /* *****************************************************************/
+    
+    @media print {
+        .ORS-navigation {
+            display: none;
+        }
+        .ORS-menuPanel {
+            display: none;
+        }
+        .ORS-header {
+            display: none;
+        }
+        #routingPanel {
+            display: none;
+        }
+        #printRouteInstructions {
+            display: none;
+        }
+        #routeInstructionHead {
+            display: none;
+        }
+        .ORS-main {
+            flex-direction: column;
+        }
+        .ORS-sidebar {
+            order: 2;
+        }
+        .ORS-map {
+            order: 1;
+            height: 20%;
+        }
+    }
+    /* ***************************************************************/
+    /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
+    /* ***************************************************************/
